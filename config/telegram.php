@@ -40,8 +40,8 @@ return [
     */
     'bots' => [
         'common' => [
-            'username'  => '@test01usernamebot',
-            'token' => env('TELEGRAM_BOT_TOKEN', '1143914199:AAFJvcm2ZIjeYviZCD-EdWzVxz33NNVBq-c'),
+            'username'  => '@username',
+            'token' => env('TELEGRAM_BOT_TOKEN', '*******'),
             'commands' => [
 //                Acme\Project\Commands\MyTelegramBot\BotCommand::class
             ],

@@ -8,3 +8,4 @@ Route::apiResource('product', 'ProductController');
 
 
 Route::post('telegram_notification', 'SendNotification@ToTelegram');
+Route::post('mail_notification', 'SendNotification@SendMail');
