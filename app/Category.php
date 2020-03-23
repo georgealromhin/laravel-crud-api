@@ -2,6 +2,7 @@
 
 namespace App;
 use Carbon\Carbon;
+use Illuminate\Notifications\Notifiable;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +10,7 @@ class Category extends Model
 {
     //
     protected $fillable = ['name'];
+    use Notifiable;
 
     public function getCreatedAtAttribute($attr)
     {
