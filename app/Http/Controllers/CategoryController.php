@@ -21,7 +21,7 @@ class CategoryController extends Controller
     *   @return CategoryResourceCollection
     */
     public function index(): CategoryResourceCollection{
-        $category = Category::orderBy('id', 'asc')->get();
+        $category = Category::orderBy('id', 'desc')->get();
         return new CategoryResourceCollection($category);
     }
     /*

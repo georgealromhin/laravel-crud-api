@@ -19,4 +19,8 @@ class Category extends Model
     {
         return Carbon::parse($attr)->format('d.m.Y H:i');
     }
+    public function product()
+    {
+    	return $this->hasMany('App\Product');
+    }
 }
