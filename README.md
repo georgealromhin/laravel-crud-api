@@ -114,6 +114,15 @@ $ php artisan migrate
 ```
 ## database seeding with ‘faker’
 ```
+$factory->define(Category::class, function (Faker $faker) {
+    return [
+        "name" => $faker->word
+    ];
+});
+
+```
+```
+
 use Illuminate\Database\Seeder;
 use App\Category;
 
@@ -126,7 +135,9 @@ class CategoryTableSeeder extends Seeder
 }
 
 ```
-
+```
+$ php artisan db:seed
+```
 
 
 ## About Laravel
