@@ -10,7 +10,9 @@
 # laravel crud api example 
 
 It consist some common operations like create, edit , delete, update 
-with implementation of image upload and update  
+with implementation of image upload and update.
+Sending Notifications To Telegram Messenger With Laravel.
+Sending Mail. 
 
 ## Create project
 ```
