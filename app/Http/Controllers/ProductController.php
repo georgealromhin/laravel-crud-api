@@ -9,8 +9,6 @@ use App\Product;
 
 class ProductController extends Controller
 {
-    //http://localhost/crud-api/public/images/image-placeholder.png
-
     
     /*
     *   @return ProductResource
@@ -56,7 +54,7 @@ class ProductController extends Controller
         return(new ProductResource($product));
     }
     /*
-    *   @return ProductResource
+    *   @return ProductResource METHOD POST with Param _method PUT
         https://url/id?_method=put
     */
     public function update(Product $product, Request $request): ProductResource{

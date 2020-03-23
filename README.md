@@ -6,6 +6,9 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
+# laravel crud api example 
+It consist some common operations like create, edit , delete, update 
+with implementation of image upload and update  
 
 ## Create project
 ```
@@ -75,6 +78,7 @@ class Product extends Model
     {
         return Carbon::parse($attr)->format('d.m.Y H:i');
     }
+    //One To Many (Inverse)
     public function category()
     {
     	return $this->belongsTo('App\Category');
@@ -112,7 +116,7 @@ class Product extends Model
 ```
 $ php artisan migrate
 ```
-## database seeding with ‘faker’
+## Database seeding with ‘faker’
 ```
 $factory->define(Category::class, function (Faker $faker) {
     return [
@@ -138,7 +142,161 @@ class CategoryTableSeeder extends Seeder
 ```
 $ php artisan db:seed
 ```
+## Create Resources
+```
+$ php artisan make:resource CategoryResource
+$ php artisan make:resource CategoryResourceCollection --collection
 
+$ php artisan make:resource ProductResource
+$ php artisan make:resource ProductResourceCollection --collection
+```
+## Create Controllers
+```
+php artisan make:controller CategoryController
+
+php artisan make:controller ProductController
+```
+## Category Controller
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Category;
+use App\Http\Resources\CategoryResource;
+use App\Http\Resources\CategoryResourceCollection;
+
+class CategoryController extends Controller
+{
+    
+    /*
+    *   @return CategoryResource
+    */
+    public function show(Category $category): CategoryResource{
+        return new CategoryResource($category);
+    }
+    /*
+    *   @return CategoryResourceCollection
+    */
+    public function index(): CategoryResourceCollection{
+        $category = Category::orderBy('id', 'desc')->get();
+        return new CategoryResourceCollection($category);
+    }
+    /*
+    *   @return CategoryResource
+    */
+    public function store(Request $request): CategoryResource{
+
+        $request->validate(['name' => 'required']);
+        $category = Category::create($request->all());
+        return(new CategoryResource($category));
+    }
+    /*
+    *   @return CategoryResource
+    */
+    public function update(Category $category, Request $request): CategoryResource{
+        $category->update($request->all());
+        return(new CategoryResource($category));
+    }
+    /*
+    *   @return 
+    */
+    public function destroy(Category $category){
+        $category->delete();
+		return response()->json();
+    }
+}
+
+
+```
+## Product Controller
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductResourceCollection;
+use App\Product;
+
+class ProductController extends Controller
+{
+    
+    /*
+    *   @return ProductResource
+    */
+    public function show(Product $product): ProductResource{
+        return new ProductResource($product);
+    }
+    /*
+    *   @return ProductResourceCollection
+    */
+    public function index(): ProductResourceCollection{
+        $product = Product::with('category')->orderBy('id', 'desc')->get();
+        return new ProductResourceCollection($product);
+    }
+    /*
+    *   @return ProductResource
+    */
+    public function store(Product $product, Request $request): ProductResource{
+
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'category_id' => 'required'
+        ]);
+        
+        //
+        if($request->hasFile('image'))
+        {
+            $image_name = time().'_'.rand(999,9999).'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('images'), $image_name);
+            $product->image = 'http://localhost/crud-api/public/images/'.$image_name;
+
+        }else{     
+
+            $product->image = 'http://localhost/crud-api/public/images/image-placeholder.png';
+            
+        }
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->category_id = $request->category_id;
+        $product->save();
+
+        return(new ProductResource($product));
+    }
+    /*
+    *   @return ProductResource METHOD POST with Param _method PUT
+        https://url/id?_method=put
+    */
+    public function update(Product $product, Request $request): ProductResource{
+
+        if($request->hasFile('image'))
+        {
+            $image_name = time().'_'.rand(999,9999).'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('images'), $image_name);
+            $product->image = 'http://localhost/crud-api/public/images/'.$image_name;
+        }
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->category_id = $request->category_id;
+        $product->save();
+
+        return(new ProductResource($product));
+
+    }
+    /*
+    *   @return 
+    */
+    public function destroy(Product $product){
+        $product->delete();
+		return response()->json();
+    }
+}
+
+```
 
 ## About Laravel
 
@@ -209,4 +367,4 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# laravel-crud-api
+
