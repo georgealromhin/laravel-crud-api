@@ -9,12 +9,10 @@
 
 ## Create project
 ```
-composer create-project --prefer-dist laravel/laravel crud-api
+$ composer create-project --prefer-dist laravel/laravel crud-api
 ```
 ## API routes
 ```
-<?php
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +21,53 @@ Route::apiResource('product', 'ProductController');
 ```
 ## Create Model With migration and factory
 ```
-php artisan make:model Category -mf
+$ php artisan make:model Category -mf
 ```
+## Create Categories Table
+```
+    public function up()
+    {
+        Schema::create('categories', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');	
+            $table->timestamps();
+        });
+    }
+```
+## Create Products Table with forgien key
+```
+    public function up()
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('image');	
+            $table->string('name');	
+            $table->double('price');	
+            $table->timestamps();
+            $table->bigInteger('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+        });
+    }
+```
+
+```
+$ php artisan migrate
+```
+## database seeding with ‘faker’
+```
+use Illuminate\Database\Seeder;
+use App\Category;
+
+class CategoryTableSeeder extends Seeder
+{
+    public function run()
+    {
+        factory(Category::Class, 10)->create();
+    }
+}
+
+```
+
 
 
 ## About Laravel
