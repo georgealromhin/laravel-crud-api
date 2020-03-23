@@ -24,7 +24,9 @@ class CategoryController extends Controller
         $category = Category::orderBy('id', 'asc')->get();
         return new CategoryResourceCollection($category);
     }
-
+    /*
+    *   @return CategoryResource
+    */
     public function store(Request $request): CategoryResource{
 
         $request->validate(['name' => 'required']);
@@ -32,13 +34,17 @@ class CategoryController extends Controller
         $category = Category::create($request->all());
         return(new CategoryResource($category));
     }
-    
+    /*
+    *   @return CategoryResource
+    */
     public function update(Category $category, Request $request): CategoryResource{
         //$request->validate(['name' => 'required']);
         $category->update($request->all());
         return(new CategoryResource($category));
     }
-
+    /*
+    *   @return 
+    */
     public function destroy(Category $category){
         $category->delete();
 		return response()->json();
