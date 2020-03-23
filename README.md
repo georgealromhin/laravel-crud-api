@@ -11,7 +11,7 @@
 
 It consist some common operations like create, edit , delete, update 
 with implementation of image upload and update.
-Sending Notifications To Telegram Messenger With Laravel.
+Sending Notifications To Telegram.
 Sending Mail. 
 
 ## Create project
