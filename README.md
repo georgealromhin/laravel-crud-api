@@ -7,6 +7,26 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+## Create project
+```
+composer create-project --prefer-dist laravel/laravel crud-api
+```
+## API routes
+```
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+Route::apiResource('category', 'CategoryController');
+Route::apiResource('product', 'ProductController');
+```
+## Create Model With migration and factory
+```
+php artisan make:model Category -mf
+```
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
