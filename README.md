@@ -22,6 +22,65 @@ Route::apiResource('product', 'ProductController');
 ## Create Model With migration and factory
 ```
 $ php artisan make:model Category -mf
+$ php artisan make:model Product -mf
+```
+## Category Model
+```
+<?php
+
+namespace App;
+use Carbon\Carbon;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Category extends Model
+{
+    protected $fillable = ['name'];
+
+    // change created_at & updated_at format using Carbon
+    public function getCreatedAtAttribute($attr)
+    {
+        return Carbon::parse($attr)->format('d.m.Y H:i');
+    }
+
+    public function getUpdatedAtAttribute($attr)
+    {
+        return Carbon::parse($attr)->format('d.m.Y H:i');
+    }
+    // Relationship one to many
+    public function product()
+    {
+    	return $this->hasMany('App\Product');
+    }
+}
+
+```
+## Product Model
+```
+namespace App;
+use Carbon\Carbon;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    protected $fillable = ['name','price','category_id'];
+
+    public function getCreatedAtAttribute($attr)
+    {
+        return Carbon::parse($attr)->format('d.m.Y H:i');
+    }
+
+    public function getUpdatedAtAttribute($attr)
+    {
+        return Carbon::parse($attr)->format('d.m.Y H:i');
+    }
+    public function category()
+    {
+    	return $this->belongsTo('App\Category');
+    }
+}
+
 ```
 ## Create Categories Table
 ```
@@ -34,7 +93,7 @@ $ php artisan make:model Category -mf
         });
     }
 ```
-## Create Products Table with forgien key
+## Create Products Table with foreign key
 ```
     public function up()
     {
