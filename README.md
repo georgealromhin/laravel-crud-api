@@ -154,9 +154,9 @@ $ php artisan make:resource ProductResourceCollection --collection
 ```
 ## Create Controllers
 ```
-php artisan make:controller CategoryController
+$ php artisan make:controller CategoryController
 
-php artisan make:controller ProductController
+$ php artisan make:controller ProductController
 ```
 ## Category Controller
 ```
