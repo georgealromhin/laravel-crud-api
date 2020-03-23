@@ -299,6 +299,88 @@ class ProductController extends Controller
 }
 
 ```
+# Send Telegram Notification
+First create a telegram bot. To do this, send a message to [@BotFather](https://telegram.me/botfather).
+
+## Telegram Bot API packages
+```
+$ composer require irazasyed/telegram-bot-sdk
+
+```
+## Create notification controller
+```
+$ php artisan make:controller SendNotification
+```
+```
+<?php
+
+namespace App\Http\Controllers;
+
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Telegram\Bot\Laravel\Facades\Telegram;
+
+class SendNotification extends Controller
+{
+    //
+    public function ToTelegram(Request $request){
+                
+        Telegram::sendMessage([
+            'chat_id' => env('TELEGRAM_CHANNEL_ID', '***************'),
+            'parse_mode' => 'HTML',
+            'text' => $request->text,
+        ]);
+    }
+   
+}
+
+```
+
+
+
+Add entry to 'config/app.php'
+```
+ 'Telegram' => Telegram\Bot\Laravel\Facades\Telegram::class,
+
+```
+Publish configuration file
+```
+php artisan vendor:publish --provider="Telegram\Bot\Laravel\TelegramServiceProvider"
+
+```
+Add telegram token in 'config/telegram.php'
+
+```
+    'bots' => [
+        'common' => [
+            'username'  => 'username',
+            'token' => env('TELEGRAM_BOT_TOKEN', 'telegram token'),
+            'commands' => [
+//                Acme\Project\Commands\MyTelegramBot\BotCommand::class
+            ],
+        ],
+```
+## Send Mail
+```
+use Illuminate\Support\Facades\Mail;
+....
+
+ public function SendMail(Request $request){
+
+        $data = [
+          "email" =>  $request->email,
+          "msg" =>  $request->message
+        ];
+        Mail::send([], [], function($message) use ($data) {
+          $message->from('example', 'name');
+          $message->to($data['email']);
+          $message->subject('New Message');
+          $message->setBody($data['message'], 'text/html');
+        });
+
+    }
+```
 
 ## About Laravel
 

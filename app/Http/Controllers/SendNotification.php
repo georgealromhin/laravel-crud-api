@@ -13,7 +13,7 @@ class SendNotification extends Controller
     public function ToTelegram(Request $request){
                 
         Telegram::sendMessage([
-            'chat_id' => env('TELEGRAM_CHANNEL_ID', '******'),
+            'chat_id' => env('TELEGRAM_CHANNEL_ID', '838174031'),
             'parse_mode' => 'HTML',
             'text' => $request->text,
         ]);
