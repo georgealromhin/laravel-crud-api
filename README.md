@@ -90,6 +90,7 @@ class Product extends Model
 }
 
 ```
+### Create Database
 ## Create Categories Table
 ```
     public function up()
